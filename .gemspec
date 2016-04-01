@@ -6,8 +6,8 @@ require "customer_daas/version"
 Gem::Specification.new do |spec|
   spec.name          = "customer_daas"
   spec.version       = CustomerDaas::VERSION
-  spec.authors       = ["Ernst van Graan"]
-  spec.email         = ["ernst.van.graan@hetzner.co.za"]
+  spec.authors       = ["Dane-Garrin Balia"]
+  spec.email         = ["dane.balia@hetzner.co.za"]
 
   spec.summary       = %q{customer_daas}
   spec.description   = %q{customer_daas}

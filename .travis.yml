@@ -1,0 +1,7 @@
+language: ruby
+rvm:
+    - ruby-2.3.0
+install:
+  - bundle install
+env:
+  - TEST_ORCHESTRATION_PROVIDER=stub

@@ -2,7 +2,7 @@ require 'jsender'
 
 module CustomerDaas
   module Test
-    class SoarAmImplementation < CustomerDaas::Providers::BootstrappedProvider
+    class SoarAmImplementation < CustomerDaas::Providers::CustomerDaasProvider
       def initialize
       end
     end

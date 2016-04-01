@@ -2,7 +2,7 @@ require 'jsender'
 
 module CustomerDaas
   module Providers
-    class BootstrappedProvider
+    class CustomerDaasProvider
       include Jsender
 
       def available?

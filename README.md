@@ -1,5 +1,5 @@
-# customer_daas 
-The foundation for development
+# customer_daas
+Customer Data Service 
 
 
 ## Documentation
