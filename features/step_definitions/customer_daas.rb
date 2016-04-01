@@ -1,13 +1,13 @@
 Given(/^a request is made for customer creation$/) do
-  @test.given_a_request_for_customer_creation
+  expect(@test.given_a_request_for_customer_creation.empty?).to be false
 end
 
 When(/^creating that profile$/) do
-  @test.build_a_customer_from_request_params
+  expect(@test.build_a_customer_from_request_params.empty?).to be false
 end
 
 Then(/^submit the request$/) do
-  @test.forward_request_to_relevant_service
+  expect(@test.forward_request_to_relevant_service.empty?).to be false
 end
 
 Given(/^the new profile creation has been submitted$/) do

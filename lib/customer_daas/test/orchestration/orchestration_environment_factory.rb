@@ -17,9 +17,10 @@ module CustomerDaas
       end
 
       def self.build_iut
-        return CustomerDaas::Test::StubCustomerDaas.new if ENV["TEST_ORCHESTRATION_PROVIDER"] == "stub"
-        return CustomerDaas::Test::TfaCustomerDaas.new if ENV["TEST_ORCHESTRATION_PROVIDER"] == "tfa"
-        return CustomerDaas::Test::SoarAmImplementation.new if ENV["TEST_ORCHESTRATION_PROVIDER"] == "production"
+        data_source = CustomerDaas::Test::DataSource.new
+        return CustomerDaas::Test::StubCustomerDaas.new(data_source) if ENV["TEST_ORCHESTRATION_PROVIDER"] == "stub"
+        return CustomerDaas::Test::TfaCustomerDaas.new(data_source) if ENV["TEST_ORCHESTRATION_PROVIDER"] == "tfa"
+        return CustomerDaas::Test::SoarAmImplementation.new(data_source) if ENV["TEST_ORCHESTRATION_PROVIDER"] == "production"
         raise TestOrchestrationProviderNotSupported.new("Could not build iut for #{ENV["TEST_ORCHESTRATION_PROVIDER"]}")
       end
     end

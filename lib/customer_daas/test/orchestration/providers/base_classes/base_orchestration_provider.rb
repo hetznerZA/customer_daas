@@ -2,8 +2,6 @@ module CustomerDaas
   module Test
     class BaseOrchestrationProvider
       def setup
-        @notifications = []
-        @configuration_service = CustomerDaas::Test::StubConfigurationService.new
       end
 
       def inject_iut(iut)
