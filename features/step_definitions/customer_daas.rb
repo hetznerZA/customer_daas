@@ -1,27 +1,27 @@
 Given(/^a request is made for customer creation$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @test.given_a_request_for_customer_creation
 end
 
 When(/^creating that profile$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @test.build_a_customer_from_request_params
 end
 
 Then(/^submit the request$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @test.forward_request_to_relevant_service
 end
 
 Given(/^the new profile creation has been submitted$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @test.customer_profile_has_been_submitted
 end
 
 When(/^informing the requestor$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @test.validate_response_before_returning
 end
 
 Then(/^return a well\-formed 'success' response$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @test.return_success_response
 end
 
 Then(/^return a well\-formed 'failure' response$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  @test_return_failure_response
 end
