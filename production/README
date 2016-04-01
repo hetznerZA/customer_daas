@@ -1,0 +1,58 @@
+This is the production implementation of the Credential Policy Validator. This implementation meets the Credential Policy Validator requirements for validating a credential (password) against a policy.
+
+To deploy to AWS beanstalk:
+
+o check out the credential policy validator and do 'bundle install'
+o check out a local, clean copy of the SOAR architecture
+o set the SOAR_DIR environment variable to point to your local copy
+o make sure any updated jewels have their production/jewels/*.zip files updated
+ 
+Inject the credential policy validator into SOAR:
+o cp production/jewels/*.zip $SOAR_DIR/jewels
+o cd $SOAR_DIR
+o jewels/extract_jewel.sh status (delete the /status route from lib/web/router.rb if this fails)
+o jewels/inject_jewel.sh status
+o jewels/inject_jewel.sh available-policies
+o jewels/inject_jewel.sh validate_credential_using_policy
+o jewels/inject_jewel.sh generate-credential
+o jewels/inject_jewel.sh index
+o ./run.sh
+
+Testing before deploying:
+- Check that CI is running green
+- TEST_ORCHESTRATION_PROVIDER=stub rake test
+- TEST_ORCHESTRATION_PROVIDER=tfa rake test (follow TFA README in a separate SOAR directory)
+- PRODUCTION_URI=127.0.0.1:9393 TEST_ORCHESTRATION_PROVIDER=production rake test
+
+You should expect all stub, and all tfa tests to pass. You should expect some tests to fail in the production environment, namely those related to 'broken generator' and 'broken validator'. Its not possible for these to pass, since the production code does not know how to 'break' itself. This is normal.
+
+Deploying:
+- Ensure config.yml does not contain any secrets
+- zip the root of SOAR_DIR up and ship to AWS beanstalk
+- tag the release in github
+- Give team Heisenberg the release tag's SHA
+- be sure to deploy with the correct configuration service URI and token, and to deploy behind SSL on an elastic load balancer. Usually asking team Heisenberg to do a 'blue-green' deploy for you works
+
+Sanity testing the 'blue' deploy before switching to 'green':
+Get the FQDN of the blue instance from team Heisenberg and do some sanity testing. Some examples are included below:
+
+https://golden_standard_template-blue.auto-h.net/validate-credential-using-policy?credential=password13453465363463&policy=hetzner-truserv-remote-management
+
+expect 'weak' notification
+
+https://golden_standard_template-blue.auto-h.net/validate-credential-using-policy?credential=password1345346_5363463&policy=hetzner-truserv-remote-management
+
+expect 'invalid character set' notification
+
+https://golden_standard_template-blue.auto-h.net/generate-credential?policy=hetzner-truserv-remote-management
+
+expect a sane generated password
+
+https://golden_standard_template-blue.auto-h.net/validate-credential-using-policy?credential=kqJDTDLcFu4h&policy=hetzner-truserv-remote-management
+
+expect strong
+
+https://golden_standard_template-blue.auto-h.net/available-policies
+
+expect to see hetzner-truserv-remote-management in the list
+

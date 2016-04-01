@@ -1,0 +1,38 @@
+= customer_daas
+
+== Features
+
+The customer_daas provides authorization features, moving the management of authorization for services into the configuration space. This is less expensive and more flexible than encoding authorization rules in application / service authorization handlers and network configurations.
+
+== Configuration
+
+The service supports:
+* {file:features/bootstrap_with_configuration_service.feature configuration} using a configuration service.
+
+== Dependencies
+
+The customer_daas depends on:
+* An customer_daas implementation adhering to the protocols in this specification.
+
+== Usage
+
+=== Setting up a local TBD instance
+* {file:tfa/README TFA instructions}
+
+=== Using the soar_am customer_daas client 
+    spec.add_dependency 'soar_am'
+
+    bundle exec irb
+
+==== Helpers
+    require 'soar_am'
+    credentials = { 'username' => 'customer_daas', 'password' => 'customer_daas' }
+    freshness = 0 # > 0 to enable cache
+    @soar_am = SoarAm::CustomerDaas.new('http://localhost:8080', credentials, freshness)
+#    tbd = @soar_am.tbd
+
+=== Workflows
+
+==== A new service needs to be authorized
+
+tbd

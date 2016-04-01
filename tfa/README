@@ -1,0 +1,22 @@
+To run the test suite against the Test Frame Architecture prototype (this directory):
+
+Prepare the environment:
+
+o check out a local copy of the SOAR architecture
+o set the SOAR_DIR environment variable to point to your local copy:
+o Modify the SOAR run.sh and comment out the CFGSRV_IDENTIFIER entry. Now SOAR will use config/config.yml
+o Use features/support/config*.example to create /features/support/config*.yml appropriately to point to your google spreadsheet containing the policies you want to test with
+ 
+Inject the TFA into SOAR:
+o cp tfa/jewels/*.zip $SOAR_DIR/jewels
+o cd $SOAR_DIR
+o jewels/extract_jewel.sh status (delete the /status route from lib/web/router.rb if this fails)
+o jewels/inject_jewel.sh status
+o jewels/inject_jewel.sh available_policies
+o jewels/inject_jewel.sh validate_credential_using_policy
+o jewels/inject_jewel.sh generate-credential
+o jewels/inject_jewel.sh index
+./run.sh
+
+Run the tests:
+SOAR_DIR=/Users/ernstv/Documents/hetzner/recipe_rack_web_service TEST_ORCHESTRATION_PROVIDER=tfa rake test
