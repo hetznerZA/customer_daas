@@ -22,7 +22,7 @@ module CustomerDaas
         @request_params = @request1[:params]
       end
 
-      def  build_a_customer_from_request_params
+      def build_a_customer_from_request_params
         @iut.build_customer(@request_params)
       end
 
@@ -31,15 +31,19 @@ module CustomerDaas
       end
 
       def customer_profile_has_been_submitted
+        @profile_creation_result = forward_request_to_relevant_service
       end
 
       def validate_response_before_returning
+        JSON.parse(@profile_creation_result)['profile'].has_key?('client_number')
       end
 
       def return_success_response
+        "{\"status\":\"success\",\"data\":{\"get\":{\"message\":\"Customer Profile Created\",\"client_id\":\"C0345194416\"}}}"
       end
 
-      def return_fail_response
+      def return_failed_response
+        "{\"status\":\"fail\",\"data\":{\"get\":{\"message\":\"Customer Profile Failed To Create\"}}}"
       end
     end
   end

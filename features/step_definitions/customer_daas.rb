@@ -11,17 +11,17 @@ Then(/^submit the request$/) do
 end
 
 Given(/^the new profile creation has been submitted$/) do
-  @test.customer_profile_has_been_submitted
+  expect(@test.customer_profile_has_been_submitted.empty?).to be false
 end
 
 When(/^informing the requestor$/) do
-  @test.validate_response_before_returning
+  expect(@test.validate_response_before_returning).to be true 
 end
 
 Then(/^return a well\-formed 'success' response$/) do
-  @test.return_success_response
+  expect(@test.return_success_response.empty?).to be false
 end
 
 Then(/^return a well\-formed 'failure' response$/) do
-  @test_return_failure_response
+  expect(@test.return_failed_response.empty?).to be false
 end
