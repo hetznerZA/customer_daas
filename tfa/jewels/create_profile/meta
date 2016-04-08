@@ -1,0 +1,5 @@
+architecture: 0.1.5
+path: /create_profile
+view: soar_sc
+controller: lib/web/controllers/create_profile.rb
+model: lib/web/models/customer.rb
