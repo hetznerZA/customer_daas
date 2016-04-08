@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dane-Garrin Balia"]
   spec.email         = ["dane.balia@hetzner.co.za"]
 
-  spec.summary       = %q{customer_daas}
-  spec.description   = %q{customer_daas}
+  spec.summary       = %q{Customer data service as a bridge to business services}
+  spec.description   = %q{Customer data service as a bridge to business services}
   spec.homepage      = "https://github.com/hetznerZA/customer_daas"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec)/}) }
@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'yard'
   spec.add_development_dependency 'byebug'
   spec.add_dependency 'jsender', "~>0.1.5"
+  spec.add_dependency 'soar_customer', "~> 0.1"
 end

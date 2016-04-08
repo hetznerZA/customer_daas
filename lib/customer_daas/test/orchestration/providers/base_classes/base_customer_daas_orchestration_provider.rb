@@ -31,6 +31,7 @@ module CustomerDaas
       end
 
       def customer_profile_has_been_submitted
+        @iut.build_customer(@request1[:params])
         @profile_creation_result = forward_request_to_relevant_service
       end
 
