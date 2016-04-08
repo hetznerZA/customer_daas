@@ -5,6 +5,6 @@ module CustomerDaas
   end
 end
 
-CustomerDaas::Test::OrchestrationProviderRegistry.instance.register("production", "Customer Profile Creation", CustomerDaas::Test::ProductionCustomerDaasOrchestrationProvider)
+CustomerDaas::Test::OrchestrationProviderRegistry.instance.register("production", "Create Customer Profile", CustomerDaas::Test::ProductionCustomerDaasOrchestrationProvider)
 
-CustomerDaas::Test::OrchestrationProviderRegistry.instance.register("tfa", "Customer Profile Creation", CustomerDaas::Test::ProductionCustomerDaasOrchestrationProvider)
+CustomerDaas::Test::OrchestrationProviderRegistry.instance.register("tfa", "Create Customer Profile", CustomerDaas::Test::ProductionCustomerDaasOrchestrationProvider)
