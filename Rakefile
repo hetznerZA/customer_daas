@@ -18,7 +18,8 @@ task :ci => :spec do
   ENV["TEST_ORCHESTRATION_PROVIDER"] ||= "stub"
   sh %{bundle exec cucumber}
   sh %Q{
-    cd production/jewels/create_profile &&
-    env -i PATH=/bin:/usr/bin:#{ENV["HOME"]}/.rvm/rubies/ruby-2.3.0/bin:#{ENV["HOME"]}/.rvm/gems/ruby-2.3.0/gems/rspec-core-3.4.4/lib:#{ENV["HOME"]}/.rvm/gems/ruby-2.3.0/gems/rspec-support-3.4.1/lib HOME=#{ENV["HOME"]} /home/travis/.rvm/gems/ruby-2.3.0/gems/rspec-core-3.4.4/exe/rspec -cfd spec
+     cd production/jewels/create_profile &&
+    env -i PATH=/bin:/usr/bin HOME=#{ENV["HOME"]} #{ENV["HOME"]}/.rvm/bin/rvm-exec $(cat .ruby-version)@$(cat .ruby-gemset) bundle install &&
+    env -i PATH=/bin:/usr/bin HOME=#{ENV["HOME"]} #{ENV["HOME"]}/.rvm/bin/rvm-exec $(cat .ruby-version)@$(cat .ruby-gemset) bundle exec rspec -cfd spec
   }
 end
