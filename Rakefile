@@ -11,7 +11,7 @@ task :test => :spec do
   sh %{bundle exec cucumber}
   sh %Q{
     cd production/jewels/create_profile &&
-    bundle install &&
-    bundle exec rspec spec/
+    env -i PATH=/bin:/usr/bin HOME=#{ENV["HOME"]} #{ENV["HOME"]}/.rvm/bin/rvm-exec $(cat .ruby-version)@$(cat .ruby-gemset) bundle install &&
+    env -i PATH=/bin:/usr/bin HOME=#{ENV["HOME"]} #{ENV["HOME"]}/.rvm/bin/rvm-exec $(cat .ruby-version)@$(cat .ruby-gemset) bundle exec rspec spec/
   }
 end
