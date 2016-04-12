@@ -19,6 +19,6 @@ task :ci => :spec do
   sh %{bundle exec cucumber}
   sh %Q{
     cd production/jewels/create_profile &&
-    env -i PATH=/bin:/usr/bin:#{ENV["HOME"]}/.rvm/rubies/ruby-2.3.0/bin:#{ENV["HOME"]}/.rvm/gems/ruby-2.3.0/gems/rspec-core-3.4.4/lib:#{ENV["HOME"]}/.rvm/gems/ruby-2.3.0/gems/rspec-support-3.4.1/lib HOME=#{ENV["HOME"]} rspec -cfd spec
+    env -i PATH=/bin:/usr/bin:#{ENV["HOME"]}/.rvm/rubies/ruby-2.3.0/bin:#{ENV["HOME"]}/.rvm/gems/ruby-2.3.0/gems/rspec-core-3.4.4/lib:#{ENV["HOME"]}/.rvm/gems/ruby-2.3.0/gems/rspec-support-3.4.1/lib HOME=#{ENV["HOME"]} /home/travis/.rvm/gems/ruby-2.3.0/gems/rspec-core-3.4.4/exe/rspec -cfd spec
   }
 end
