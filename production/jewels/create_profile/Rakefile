@@ -1,0 +1,10 @@
+require 'rspec/core/rake_task'
+
+task :default => :test
+
+desc "Running the tests for production"
+
+task :test => :spec do
+  ENV["TEST_ORCHESTRATION_PROVIDER"] ||= "production"
+  sh %{rspec spec}
+end
