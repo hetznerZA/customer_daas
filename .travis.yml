@@ -5,3 +5,4 @@ install:
   - bundle install
 env:
   - TEST_ORCHESTRATION_PROVIDER=stub
+script: bundle exec rake ci
