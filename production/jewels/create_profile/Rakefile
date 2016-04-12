@@ -1,5 +1,13 @@
 require 'rspec/core/rake_task'
 
+require 'simplecov'
+require 'simplecov-rcov'
+
+SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+SimpleCov.start do
+    add_filter "/spec/"
+end
+
 task :default => :test
 
 desc "Running the tests for production"
