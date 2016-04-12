@@ -1,16 +1,20 @@
 require 'soar_customer'
+require_relative 'model_factory'
 
 module SoarSc
   module Web
     module Models
       class Customer 
         attr_reader :configuration
+        attr_reader :data_provider
 
         class SoarCustomerDaasError < StandardError; end
 
         def initialize(configuration)
           @configuration = configuration
           validate_configuration
+          factory = SoarSc::Web::Models::ModelFactory.new(@configuration) 
+          @data_provider = factory.create
         end
 
         private 

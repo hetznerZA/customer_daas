@@ -9,7 +9,7 @@ describe SoarSc::Web::Models::Customer do
     @iut = SoarSc::Web::Models::Customer.new(@configuration)
   end
 
-  context 'when initialized' do
+  context 'when initialzing validating the configuration' do
     it 'should raise an exception if the configuration is empty' do
       expect {SoarSc::Web::Models::Customer.new({})}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'No configuration')
@@ -68,8 +68,12 @@ describe SoarSc::Web::Models::Customer do
 
   end
 
+  context 'initialize data provider' do
+    pending 'TODO'
+  end
+
   context 'authenticated when initialized' do
-    pending('TODO')
+    pending 'TODO'
   end
 
   context 'should remember the configuration provided' do
