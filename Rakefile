@@ -19,7 +19,7 @@ task :ci => :spec do
   sh %{bundle exec cucumber}
   sh %Q{
     cd production/jewels/create_profile &&
-    env -i PATH=/bin:/usr/bin:#{ENV["HOME"]}/.rvm/rubies/ruby-2.3.0/bin: HOME=#{ENV["HOME"]} gem install bundle &&
+    env -i PATH=/bin:/usr/bin:#{ENV["HOME"]}/.rvm/rubies/ruby-2.3.0/bin: HOME=#{ENV["HOME"]} gem install bundler &&
     env -i PATH=/bin:/usr/bin:#{ENV["HOME"]}/.rvm/rubies/ruby-2.3.0/bin: HOME=#{ENV["HOME"]} bundle install &&
     env -i PATH=/bin:/usr/bin:#{ENV["HOME"]}/.rvm/rubies/ruby-2.3.0/bin: HOME=#{ENV["HOME"]} bundle exec rspec -cfd spec
   }
