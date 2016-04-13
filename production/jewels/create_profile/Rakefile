@@ -1,18 +1,23 @@
 require 'rspec/core/rake_task'
 
 require 'simplecov'
-require 'simplecov-rcov'
-
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 SimpleCov.start do
-    add_filter "/spec/"
-end
+  add_filter '/spec/'
+  add_group 'Models', 'lib/web/models'
+end if ENV["COVERAGE"]
 
 task :default => :test
 
-desc "Running the tests for production"
+# And add rake task spec:coverage to lib/tasks/coverage.rake:
+desc "Create rspec coverage"
+task :coverage do
+    ENV['COVERAGE'] = 'true'
+    `rspec spec`
+    `open coverage/index.html`
+end
 
+desc "Running the tests for production"
 task :test => :spec do
   ENV["TEST_ORCHESTRATION_PROVIDER"] ||= "production"
-  sh %{rspec spec}
+  `rspec spec`
 end

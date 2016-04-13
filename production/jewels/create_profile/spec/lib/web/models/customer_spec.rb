@@ -68,12 +68,12 @@ describe SoarSc::Web::Models::Customer do
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'Missing server url')
     end
 
-    it 'should load the correct provider' do
-      expect(@iut.data_provider.class).to eq FakeDataProvider
-    end
-
     it 'should remember the configuration provided' do
       expect(@iut.configuration).to eq @configuration
+    end
+
+    it 'should load the correct provider' do
+      expect(@iut.data_provider.class).to eq FakeDataProvider
     end
 
     it 'should be able to authorize against the provider' do
@@ -82,6 +82,7 @@ describe SoarSc::Web::Models::Customer do
   end
 
   context 'should create the profile' do
+
   end
 
   context 'should translate/formate the response from profile creation' do

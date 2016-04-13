@@ -30,8 +30,6 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    simplecov-rcov (0.2.3)
-      simplecov (>= 0.4.1)
     soar_customer (0.1.5)
       faraday (~> 0.9)
       faraday_middleware (~> 0.10)
@@ -48,7 +46,6 @@ DEPENDENCIES
   rake
   rspec
   simplecov
-  simplecov-rcov
   soar_customer
 
 BUNDLED WITH

@@ -1,3 +1,9 @@
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+  add_group 'Models', 'lib/web/models'
+end if ENV["COVERAGE"]
+
 root=Dir.pwd
 $LOAD_PATH.unshift File.join("#{root}/")
 $LOAD_PATH.unshift File.join("#{root}/lib")
