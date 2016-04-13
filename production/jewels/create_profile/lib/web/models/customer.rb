@@ -4,7 +4,7 @@ require_relative 'model_factory'
 module SoarSc
   module Web
     module Models
-      class Customer 
+      class Customer
         attr_reader :configuration
         attr_accessor :data_provider
 
@@ -13,11 +13,21 @@ module SoarSc
         def initialize(configuration)
           @configuration = configuration
           validate_configuration
-          factory = SoarSc::Web::Models::ModelFactory.new(@configuration) 
+          factory = SoarSc::Web::Models::ModelFactory.new(@configuration)
           @data_provider = factory.create
+          authenticate
         end
 
-        private 
+        protected
+        def authenticate
+          credential = {
+            'username' => configuration['username'],
+            'password' => configuration['password']
+          }
+          @data_provider.authenticate(credential)
+        end
+
+        private
         def validate_configuration
           raise SoarCustomerDaasError.new('No configuration') if @configuration.nil? || @configuration.empty?
           raise SoarCustomerDaasError.new('Missing username') if @configuration['username'].nil? || @configuration['username'].empty?

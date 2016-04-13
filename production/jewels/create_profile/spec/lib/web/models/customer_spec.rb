@@ -3,10 +3,15 @@ require 'byebug'
 
 describe SoarSc::Web::Models::Customer do
   before :each do
-    setup_iut
+    @configuration = { 'adaptor' => 'FakeDataProvider',
+                       'username' => 'admin',
+                       'password' => 'admin',
+                       'server_url' => 'http://localhost:9292' }
+    setup_iut(@configuration)
+    SoarSc::Web::Models::Customer.send(:public, *SoarSc::Web::Models::Customer.protected_instance_methods)
   end
 
-  context 'when initialzing validating the configuration' do
+  context 'when initialzing with a configuration' do
     it 'should raise an exception if the configuration is empty' do
       expect {SoarSc::Web::Models::Customer.new({})}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'No configuration')
@@ -64,20 +69,19 @@ describe SoarSc::Web::Models::Customer do
     end
 
     it 'should load the correct provider' do
-      expect(@iut.data_provider.class).to eq SoarCustomer::HapiProvider
+      expect(@iut.data_provider.class).to eq FakeDataProvider
     end
 
     it 'should remember the configuration provided' do
       expect(@iut.configuration).to eq @configuration
     end
-  end
 
-  context 'authenticated when initialized' do
-    pending 'TODO'
+    it 'should be able to authorize against the provider' do
+      expect(@iut.authenticate).to eq true
+    end
   end
 
   context 'should create the profile' do
-    pending('TODO')
   end
 
   context 'should translate/formate the response from profile creation' do
@@ -85,10 +89,6 @@ describe SoarSc::Web::Models::Customer do
   end
 end
 
-def setup_iut
-  @configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
-                     'username' => 'admin',
-                     'password' => 'admin',
-                     'server_url' => 'http://localhost:9292' }
-  @iut = SoarSc::Web::Models::Customer.new(@configuration)
+def setup_iut(configuration)
+  @iut = SoarSc::Web::Models::Customer.new(configuration)
 end
