@@ -6,7 +6,7 @@ module SoarSc
     module Models
       class Customer 
         attr_reader :configuration
-        attr_reader :data_provider
+        attr_accessor :data_provider
 
         class SoarCustomerDaasError < StandardError; end
 

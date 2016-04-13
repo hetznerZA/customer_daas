@@ -11,7 +11,7 @@ module SoarSc
         end
 
         def create
-          eval(@configuration['adaptor']).new(@configuration)
+          return eval(@configuration['adaptor']).new(@configuration)
         end
       end
     end

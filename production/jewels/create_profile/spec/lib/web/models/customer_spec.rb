@@ -1,12 +1,9 @@
 require 'spec_helper'
+require 'byebug'
 
 describe SoarSc::Web::Models::Customer do
   before :each do
-    @configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
-                       'username' => 'admin',
-                       'password' => 'admin',
-                       'server_url' => 'http://localhost:9292' }
-    @iut = SoarSc::Web::Models::Customer.new(@configuration)
+    setup_iut
   end
 
   context 'when initialzing validating the configuration' do
@@ -44,40 +41,39 @@ describe SoarSc::Web::Models::Customer do
 
     it 'should raise an exception when the password is empty' do
       configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
-                         'username' => 'admin',
-                         'server_url' => 'http://localhost:9292' }
+                        'username' => 'admin',
+                        'server_url' => 'http://localhost:9292' }
       expect {SoarSc::Web::Models::Customer.new(configuration)}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'Missing password')
     end
 
     it 'should raise an exception when the adaptor is empty' do
       configuration = { 'username' => 'admin',
-                         'password' => 'admin',
-                         'server_url' => 'http://localhost:9292' }
+                        'password' => 'admin',
+                        'server_url' => 'http://localhost:9292' }
       expect {SoarSc::Web::Models::Customer.new(configuration)}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'Missing adaptor')
     end
 
     it 'should raise an exception when the server url is empty' do
       configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
-                         'username' => 'admin',
-                         'password' => 'admin' }
+                        'username' => 'admin',
+                        'password' => 'admin' }
       expect {SoarSc::Web::Models::Customer.new(configuration)}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'Missing server url')
     end
 
-  end
+    it 'should load the correct provider' do
+      expect(@iut.data_provider.class).to eq SoarCustomer::HapiProvider
+    end
 
-  context 'initialize data provider' do
-    pending 'TODO'
+    it 'should remember the configuration provided' do
+      expect(@iut.configuration).to eq @configuration
+    end
   end
 
   context 'authenticated when initialized' do
     pending 'TODO'
-  end
-
-  context 'should remember the configuration provided' do
-    pending('TODO')
   end
 
   context 'should create the profile' do
@@ -87,4 +83,12 @@ describe SoarSc::Web::Models::Customer do
   context 'should translate/formate the response from profile creation' do
     pending('TODO')
   end
+end
+
+def setup_iut
+  @configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
+                     'username' => 'admin',
+                     'password' => 'admin',
+                     'server_url' => 'http://localhost:9292' }
+  @iut = SoarSc::Web::Models::Customer.new(@configuration)
 end
