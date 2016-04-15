@@ -1,6 +1,7 @@
 require 'soar_customer'
 require_relative 'model_factory'
 require 'jsender'
+require 'logger'
 
 module SoarSc
   module Web
@@ -23,6 +24,7 @@ module SoarSc
         def create_profile(customer_info)
           @data_provider.create_profile(customer_info)
         rescue => e
+          Logger.log.debug "Failed to create profile: #{e.message}"
           fail 'Exception while trying to create profile' 
         end
 
