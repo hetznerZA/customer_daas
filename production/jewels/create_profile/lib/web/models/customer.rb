@@ -1,7 +1,7 @@
 require 'soar_customer'
-require_relative 'model_factory'
 require 'jsender'
-require 'logger'
+require 'lib/web/support/logging'
+require_relative 'model_factory'
 
 module SoarSc
   module Web

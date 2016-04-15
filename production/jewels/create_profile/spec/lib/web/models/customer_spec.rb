@@ -97,7 +97,7 @@ describe SoarSc::Web::Models::Customer do
                         'server_url' => 'http://localhost:9292',
                         'broken' => '' }
       iut = SoarSc::Web::Models::Customer.new(broken_config)
-      expect{iut.create_profile(@customer_info)}.to_not raise_error(StandardError)
+      expect{iut.create_profile(@customer_info)}.not_to raise_error
     end
 
     it 'should return a jsend format response if the response was a failure' do
