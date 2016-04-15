@@ -90,27 +90,29 @@ describe SoarSc::Web::Models::Customer do
       response = @iut.create_profile(@customer_info)
     end
 
-    it 'should notify if the profile has been created' do
-      response = @iut.create_profile(@customer_info)
-      expect(JSON.parse(response)['status']).to eq "success"
-    end
-
     it 'should return a handled exception if an unknown exception occurs' do
       broken_config = { 'adaptor' => 'FakeDataProvider',
-                         'username' => 'admin',
-                         'password' => 'admin',
-                         'server_url' => 'http://localhost:9292',
-                         'broken' => '' }
-      iut = SoarSc::Web::Models::Customer.new(broken_config) 
+                        'username' => 'admin',
+                        'password' => 'admin',
+                        'server_url' => 'http://localhost:9292',
+                        'broken' => '' }
+      iut = SoarSc::Web::Models::Customer.new(broken_config)
+      expect{iut.create_profile(@customer_info)}.to_not raise_error(StandardError)
+    end
+
+    it 'should return a jsend format response if the response was a failure' do
+      broken_config = { 'adaptor' => 'FakeDataProvider',
+                        'username' => 'admin',
+                        'password' => 'admin',
+                        'server_url' => 'http://localhost:9292',
+                        'broken' => '' }
+      iut = SoarSc::Web::Models::Customer.new(broken_config)
       expect(iut.create_profile(@customer_info)).to eq @failed_response
     end
 
     it 'should return a jsend format response if the response was a success' do
-      pending 'TODO'
-    end
-
-    it 'should return a jsend format response if the response was a failure' do
-      pending 'TODO'
+      response = @iut.create_profile(@customer_info)
+      expect(JSON.parse(response)['status']).to eq "success"
     end
   end
 end
