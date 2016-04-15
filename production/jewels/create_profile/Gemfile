@@ -4,5 +4,7 @@ gem 'bundler'
 gem 'rake'
 gem 'rspec'
 gem 'simplecov'
-gem 'simplecov-rcov'
 gem 'soar_customer'
+gem 'jsender'
+
+gem 'byebug'

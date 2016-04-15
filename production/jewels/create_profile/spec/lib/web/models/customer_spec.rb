@@ -1,15 +1,20 @@
 require 'spec_helper'
+require 'byebug'
 
 describe SoarSc::Web::Models::Customer do
   before :each do
-    @configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
+    @configuration = { 'adaptor' => 'FakeDataProvider',
                        'username' => 'admin',
                        'password' => 'admin',
                        'server_url' => 'http://localhost:9292' }
-    @iut = SoarSc::Web::Models::Customer.new(@configuration)
+    @iut = setup_iut(@configuration)
+    @customer_info = get_customer_dto
+    @provider_response = get_provider_response
+    @failed_response = {"status"=>"fail", "data"=>{"result"=>nil, "notifications"=>["Exception while trying to create profile"]}}
+    SoarSc::Web::Models::Customer.send(:public, *SoarSc::Web::Models::Customer.protected_instance_methods)
   end
 
-  context 'when initialized' do
+  context 'when initialzing with a configuration' do
     it 'should raise an exception if the configuration is empty' do
       expect {SoarSc::Web::Models::Customer.new({})}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'No configuration')
@@ -44,43 +49,102 @@ describe SoarSc::Web::Models::Customer do
 
     it 'should raise an exception when the password is empty' do
       configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
-                         'username' => 'admin',
-                         'server_url' => 'http://localhost:9292' }
+                        'username' => 'admin',
+                        'server_url' => 'http://localhost:9292' }
       expect {SoarSc::Web::Models::Customer.new(configuration)}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'Missing password')
     end
 
     it 'should raise an exception when the adaptor is empty' do
       configuration = { 'username' => 'admin',
-                         'password' => 'admin',
-                         'server_url' => 'http://localhost:9292' }
+                        'password' => 'admin',
+                        'server_url' => 'http://localhost:9292' }
       expect {SoarSc::Web::Models::Customer.new(configuration)}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'Missing adaptor')
     end
 
     it 'should raise an exception when the server url is empty' do
       configuration = { 'adaptor' => 'SoarCustomer::HapiProvider',
-                         'username' => 'admin',
-                         'password' => 'admin' }
+                        'username' => 'admin',
+                        'password' => 'admin' }
       expect {SoarSc::Web::Models::Customer.new(configuration)}.to raise_error(
       SoarSc::Web::Models::Customer::SoarCustomerDaasError, 'Missing server url')
     end
 
+    it 'should remember the configuration provided' do
+      expect(@iut.configuration).to eq @configuration
+    end
+
+    it 'should load the correct provider' do
+      expect(@iut.data_provider.class).to eq FakeDataProvider
+    end
+
+    it 'should be store the authentication details' do
+      expect(@iut.authenticate).to eq true
+    end
   end
 
-  context 'authenticated when initialized' do
-    pending('TODO')
-  end
+  context 'when creating the profile' do
+    it 'should submit the request to the data provider' do
+      expect_any_instance_of(FakeDataProvider).to receive(:create_profile).with(@customer_info)
+      response = @iut.create_profile(@customer_info)
+    end
 
-  context 'should remember the configuration provided' do
-    pending('TODO')
-  end
+    it 'should return a handled exception if an unknown exception occurs' do
+      broken_config = { 'adaptor' => 'FakeDataProvider',
+                        'username' => 'admin',
+                        'password' => 'admin',
+                        'server_url' => 'http://localhost:9292',
+                        'broken' => '' }
+      iut = SoarSc::Web::Models::Customer.new(broken_config)
+      expect{iut.create_profile(@customer_info)}.to_not raise_error(StandardError)
+    end
 
-  context 'should create the profile' do
-    pending('TODO')
-  end
+    it 'should return a jsend format response if the response was a failure' do
+      broken_config = { 'adaptor' => 'FakeDataProvider',
+                        'username' => 'admin',
+                        'password' => 'admin',
+                        'server_url' => 'http://localhost:9292',
+                        'broken' => '' }
+      iut = SoarSc::Web::Models::Customer.new(broken_config)
+      expect(iut.create_profile(@customer_info)).to eq @failed_response
+    end
 
-  context 'should translate/formate the response from profile creation' do
-    pending('TODO')
+    it 'should return a jsend format response if the response was a success' do
+      response = @iut.create_profile(@customer_info)
+      expect(JSON.parse(response)['status']).to eq "success"
+    end
   end
+end
+
+def setup_iut(configuration)
+  SoarSc::Web::Models::Customer.new(configuration)
+end
+
+def get_customer_dto
+  %Q{ {
+        "email_address": "danebalia#{rand(5000)}@codedtrue.com",
+        "password": "Murder5Murder6",
+        "title": "mr",
+        "telephone": "+27836533698",
+        "first_name": "Charles",
+        "last_name": "Mulder",
+        "street": "57 Killarney Street",
+        "city": "Oakdale",
+        "postal_code": "7530",
+        "country": "ZA",
+        "receive_newsletters": "true",
+        "marketing_referrer": "Other",
+        "marketing_other": "Other",
+        "verified": "true",
+        "id_number":"",
+        "vat_number":"",
+        "cellphone":"",
+        "fax": "",
+      "company":"" }
+      }
+end
+
+def get_provider_response
+  "{\"status\":\"success\",\"data\":{\"message\":\"Customer Profile Created\",\"client_id\":\"C0345194416\"}}"
 end
