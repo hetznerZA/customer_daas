@@ -43,6 +43,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   byebug
+  jsender
   rake
   rspec
   simplecov

@@ -7,7 +7,10 @@ describe SoarSc::Web::Models::Customer do
                        'username' => 'admin',
                        'password' => 'admin',
                        'server_url' => 'http://localhost:9292' }
-    setup_iut(@configuration)
+    @iut = setup_iut(@configuration)
+    @customer_info = get_customer_dto
+    @provider_response = get_provider_response
+    @failed_response = {"status"=>"fail", "data"=>{"result"=>nil, "notifications"=>["Exception while trying to create profile"]}}
     SoarSc::Web::Models::Customer.send(:public, *SoarSc::Web::Models::Customer.protected_instance_methods)
   end
 
@@ -76,20 +79,70 @@ describe SoarSc::Web::Models::Customer do
       expect(@iut.data_provider.class).to eq FakeDataProvider
     end
 
-    it 'should be able to authorize against the provider' do
+    it 'should be store the authentication details' do
       expect(@iut.authenticate).to eq true
     end
   end
 
-  context 'should create the profile' do
+  context 'when creating the profile' do
+    it 'should submit the request to the data provider' do
+      expect_any_instance_of(FakeDataProvider).to receive(:create_profile).with(@customer_info)
+      response = @iut.create_profile(@customer_info)
+    end
 
-  end
+    it 'should notify if the profile has been created' do
+      response = @iut.create_profile(@customer_info)
+      expect(JSON.parse(response)['status']).to eq "success"
+    end
 
-  context 'should translate/formate the response from profile creation' do
-    pending('TODO')
+    it 'should return a handled exception if an unknown exception occurs' do
+      broken_config = { 'adaptor' => 'FakeDataProvider',
+                         'username' => 'admin',
+                         'password' => 'admin',
+                         'server_url' => 'http://localhost:9292',
+                         'broken' => '' }
+      iut = SoarSc::Web::Models::Customer.new(broken_config) 
+      expect(iut.create_profile(@customer_info)).to eq @failed_response
+    end
+
+    it 'should return a jsend format response if the response was a success' do
+      pending 'TODO'
+    end
+
+    it 'should return a jsend format response if the response was a failure' do
+      pending 'TODO'
+    end
   end
 end
 
 def setup_iut(configuration)
-  @iut = SoarSc::Web::Models::Customer.new(configuration)
+  SoarSc::Web::Models::Customer.new(configuration)
+end
+
+def get_customer_dto
+  %Q{ {
+        "email_address": "danebalia#{rand(5000)}@codedtrue.com",
+        "password": "Murder5Murder6",
+        "title": "mr",
+        "telephone": "+27836533698",
+        "first_name": "Charles",
+        "last_name": "Mulder",
+        "street": "57 Killarney Street",
+        "city": "Oakdale",
+        "postal_code": "7530",
+        "country": "ZA",
+        "receive_newsletters": "true",
+        "marketing_referrer": "Other",
+        "marketing_other": "Other",
+        "verified": "true",
+        "id_number":"",
+        "vat_number":"",
+        "cellphone":"",
+        "fax": "",
+      "company":"" }
+      }
+end
+
+def get_provider_response
+  "{\"status\":\"success\",\"data\":{\"message\":\"Customer Profile Created\",\"client_id\":\"C0345194416\"}}"
 end

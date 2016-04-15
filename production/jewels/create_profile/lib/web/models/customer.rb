@@ -1,10 +1,12 @@
 require 'soar_customer'
 require_relative 'model_factory'
+require 'jsender'
 
 module SoarSc
   module Web
     module Models
       class Customer
+        include Jsender
         attr_reader :configuration
         attr_accessor :data_provider
 
@@ -16,6 +18,12 @@ module SoarSc
           factory = SoarSc::Web::Models::ModelFactory.new(@configuration)
           @data_provider = factory.create
           authenticate
+        end
+
+        def create_profile(customer_info)
+          @data_provider.create_profile(customer_info)
+        rescue => e
+          fail 'Exception while trying to create profile' 
         end
 
         protected
