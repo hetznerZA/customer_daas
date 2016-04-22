@@ -1,0 +1,6 @@
+architecture: 0.0.1
+path: /create_profile
+controller: lib/web/controllers/create_profile.rb
+view: lib/web/views/customer.rb 
+model: lib/web/models/customer.rb
+files: lib/web/controllers/configured_controller.rb lib/web/models/model_factory.rb lib/web/support/logging.rb

@@ -1,4 +1,4 @@
-This is the production implementation of the Credential Policy Validator. This implementation meets the Credential Policy Validator requirements for validating a credential (password) against a policy.
+This is the production implementation of the Customer Data Service.
 
 To deploy to AWS beanstalk:
 

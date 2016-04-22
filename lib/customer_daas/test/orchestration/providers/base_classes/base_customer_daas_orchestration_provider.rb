@@ -23,7 +23,9 @@ module CustomerDaas
       end
 
       def build_a_customer_from_request_params
+        byebug
         @iut.build_customer(@request_params)
+        @iut.customer == JSON.parse(@request_params)
       end
 
       def forward_request_to_relevant_service

@@ -4,6 +4,8 @@ module CustomerDaas
   module Test
     class StubCustomerDaas < CustomerDaas::Providers::CustomerDaasProvider
       include Jsender
+
+      attr_accessor :customer
       
       def initialize(data_source)
         @data_source = data_source

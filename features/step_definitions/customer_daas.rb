@@ -1,9 +1,9 @@
 Given(/^a request is made for customer creation$/) do
-  expect(@test.given_a_request_for_customer_creation.empty?).to be false
+  @test.given_a_request_for_customer_creation
 end
 
 When(/^creating that profile$/) do
-  expect(@test.build_a_customer_from_request_params.empty?).to be false
+  expect(@test.build_a_customer_from_request_params).to be true
 end
 
 Then(/^submit the request$/) do
