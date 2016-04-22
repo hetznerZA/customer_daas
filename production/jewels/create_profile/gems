@@ -1,0 +1,2 @@
+gem 'soar_customer', "~> 0.1.0"
+gem 'jsender', "~> 0.1.0"

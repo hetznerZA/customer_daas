@@ -16,7 +16,7 @@ Feature: Create Customer Profile
 
   Scenario: Request for new profile unsuccessful
     Given the new profile creation has been submitted
-    When informing the requestor
+    When the request fails
     Then return a well-formed 'failure' response
 
   
