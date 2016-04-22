@@ -19,6 +19,12 @@ module CustomerDaas
 
       def submit_to_data_source
         @profile_creation_result = @data_source.create_profile(@customer)
+      rescue Exception => e
+        fail 'Failed to create profile'
+      end
+
+      def break_response
+        @data_source.break_response
       end
     end
   end

@@ -11,7 +11,7 @@ Then(/^submit the request$/) do
 end
 
 Given(/^the new profile creation has been submitted$/) do
-  expect(@test.customer_profile_has_been_submitted).to be false
+  expect(@test.customer_profile_has_been_submitted).to be true
 end
 
 When(/^informing the requestor$/) do
@@ -19,9 +19,13 @@ When(/^informing the requestor$/) do
 end
 
 Then(/^return a well\-formed 'success' response$/) do
-  expect(@test.return_success_response.empty?).to be false
+  expect(@test.return_success_response).to be false
+end
+
+When(/^the request fails$/) do
+  expect(@test.failed_request).to be true
 end
 
 Then(/^return a well\-formed 'failure' response$/) do
-  expect(@test.return_failed_response.empty?).to be false
+  expect(@test.return_failed_response).to be false
 end

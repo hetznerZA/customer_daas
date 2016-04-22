@@ -1,6 +1,10 @@
+require 'jsender'
+
 module CustomerDaas
   module Test
     class BaseCustomerDaasOrchestrationProvider < BaseOrchestrationProvider
+      include Jsender
+
       def initialize
         @request1 = { params: "{\"email_address\":\"dane.balia@hetzner.co.za\",
                      \"password\":\"password123\",\"title\":\"Mr\",
@@ -15,6 +19,7 @@ module CustomerDaas
                      \"cellphone\":\"0799571010\",\"fax\":\"\",
                      \"company\":\"Hetzner\"}"
                       }
+        @valid_jsend_response = {"status"=>"success", "data"=>{"profile"=>{"client_number"=>"C0345194416"}, "notifications"=>["success"]}}
       end
 
       def given_a_request_for_customer_creation
@@ -23,32 +28,36 @@ module CustomerDaas
       end
 
       def build_a_customer_from_request_params
-        byebug
         @iut.build_customer(@request_params)
         @iut.customer == JSON.parse(@request_params)
       end
 
       def forward_request_to_data_source
         @iut.submit_to_data_source
-        byebug
         @iut.profile_creation_result.to_s.include?('profile')
+      end
+
+      def failed_request
+        @iut.break_response
       end
 
       def customer_profile_has_been_submitted
         @iut.build_customer(@request1[:params])
-        @profile_creation_result = forward_request_to_relevant_service
+        forward_request_to_data_source
+        @iut.profile_creation_result.to_s.include?('profile')
       end
 
       def validate_response_before_returning
-        JSON.parse(@profile_creation_result)['profile'].has_key?('client_number')
+        JSON.parse(@iut.profile_creation_result)['profile'].has_key?('client_number')
       end
 
       def return_success_response
-        "{\"status\":\"success\",\"data\":{\"get\":{\"message\":\"Customer Profile Created\",\"client_id\":\"C0345194416\"}}}"
+        success_data(JSON.parse(@iut.profile_creation_result)['profile']) == @valid_jsend_response
       end
 
       def return_failed_response
-        "{\"status\":\"fail\",\"data\":{\"get\":{\"message\":\"Customer Profile Failed To Create\"}}}"
+        response = forward_request_to_data_source
+         response.to_s.include?('fail') 
       end
     end
   end
