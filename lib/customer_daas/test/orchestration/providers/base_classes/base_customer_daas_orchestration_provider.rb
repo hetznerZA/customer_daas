@@ -28,8 +28,10 @@ module CustomerDaas
         @iut.customer == JSON.parse(@request_params)
       end
 
-      def forward_request_to_relevant_service
+      def forward_request_to_data_source
         @iut.submit_to_data_source
+        byebug
+        @iut.profile_creation_result.to_s.include?('profile')
       end
 
       def customer_profile_has_been_submitted

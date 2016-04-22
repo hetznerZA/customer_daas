@@ -5,7 +5,7 @@ module CustomerDaas
     class StubCustomerDaas < CustomerDaas::Providers::CustomerDaasProvider
       include Jsender
 
-      attr_accessor :customer
+      attr_reader :customer, :profile_creation_result
       
       def initialize(data_source)
         @data_source = data_source

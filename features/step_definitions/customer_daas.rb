@@ -7,11 +7,11 @@ When(/^creating that profile$/) do
 end
 
 Then(/^submit the request$/) do
-  expect(@test.forward_request_to_relevant_service.empty?).to be false
+  expect(@test.forward_request_to_data_source).to be true
 end
 
 Given(/^the new profile creation has been submitted$/) do
-  expect(@test.customer_profile_has_been_submitted.empty?).to be false
+  expect(@test.customer_profile_has_been_submitted).to be false
 end
 
 When(/^informing the requestor$/) do
